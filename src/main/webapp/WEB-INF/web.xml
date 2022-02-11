@@ -1,0 +1,41 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>Traveler Servlet Application</display-name>
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>org.olenazaviriukha.travel.filter.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+<!--    <listener>-->
+<!--        <listener-class>org.olenazaviriukha.travel.listener.ContextListener</listener-class>-->
+<!--    </listener>-->
+<!--    <context-param>-->
+<!--        <param-name>url</param-name>-->
+<!--        <param-value>jdbc:mysql://localhost/</param-value>-->
+<!--    </context-param>-->
+<!--    <context-param>-->
+<!--        <param-name>database</param-name>-->
+<!--        <param-value>traveldb</param-value>-->
+<!--    </context-param>-->
+<!--    <context-param>-->
+<!--        <param-name>user_name</param-name>-->
+<!--        <param-value>root</param-value>-->
+<!--    </context-param>-->
+<!--    <context-param>-->
+<!--        <param-name>password</param-name>-->
+<!--        <param-value>root</param-value>-->
+<!--    </context-param>-->
+
+</web-app>

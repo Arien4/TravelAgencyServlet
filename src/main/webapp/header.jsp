@@ -8,7 +8,7 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="messages"/>
 
@@ -24,9 +24,9 @@
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="<%= request.getContextPath() %>/" class="nav-link px-2 link-secondary"><fmt:message key="header.nav.Home"/></a></li>
             <li><a href="<%= request.getContextPath() %>/users" class="nav-link px-2 link-dark"><fmt:message key="header.nav.Users"/></a></li>
-            <li><a href="<%= request.getContextPath() %>/tour_add" class="nav-link px-2 link-dark"><fmt:message key="header.nav.NewTour"></a></li>
-            <li><a href="<%= request.getContextPath() %>/hotels" class="nav-link px-2 link-dark"><fmt:message key="header.nav.Hotels"></a></li>
-            <li><a href="<%= request.getContextPath() %>/hotel_add" class="nav-link px-2 link-dark"><fmt:message key="header.nav.NewHotels"></a></li>
+            <li><a href="<%= request.getContextPath() %>/tour_add" class="nav-link px-2 link-dark"><fmt:message key="header.nav.NewTour"/></a></li>
+            <li><a href="<%= request.getContextPath() %>/hotels" class="nav-link px-2 link-dark"><fmt:message key="header.nav.Hotels"/></a></li>
+            <li><a href="<%= request.getContextPath() %>/hotel_add" class="nav-link px-2 link-dark"><fmt:message key="header.nav.NewHotels"/></a></li>
         </ul>
         <c:if test="${sessionScope.user == null}">
         <div class="col-md-3 text-end">

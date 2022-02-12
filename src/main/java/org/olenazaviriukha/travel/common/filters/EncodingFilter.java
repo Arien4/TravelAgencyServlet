@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.filter;
+package org.olenazaviriukha.travel.common.filters;
 
 import javax.servlet.*;
 import java.io.IOException;
@@ -22,7 +22,6 @@ public class EncodingFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
             throws ServletException, IOException {
 //        log.debug("Filter starts");
-
         String requestEncoding = req.getCharacterEncoding();
 
         if (requestEncoding == null) {

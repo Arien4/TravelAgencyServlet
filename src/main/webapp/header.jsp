@@ -7,19 +7,26 @@
 --%>
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="messages"/>
+
 <div class="container">
+<%--    <c:out value="${sessionScope.locale}"/>--%>
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-        </a>
+        <div class="col-md-3 text-end">
+            <a href="<%= request.getContextPath() %>/?lang_code=ua" role="button" class="btn btn-outline-primary">Укр</a>
+            <a href="<%= request.getContextPath() %>/?lang_code=en" role="button" class="btn btn-outline-primary">En</a>
+        </div>
+
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="<%= request.getContextPath() %>/" class="nav-link px-2 link-secondary">Home</a></li>
-            <li><a href="<%= request.getContextPath() %>/users" class="nav-link px-2 link-dark">Users</a></li>
-            <li><a href="<%= request.getContextPath() %>/tour_add" class="nav-link px-2 link-dark">New Tour</a></li>
-            <li><a href="<%= request.getContextPath() %>/hotels" class="nav-link px-2 link-dark">Hotels</a></li>
-            <li><a href="<%= request.getContextPath() %>/hotel_add" class="nav-link px-2 link-dark">New Hotel</a></li>
+            <li><a href="<%= request.getContextPath() %>/" class="nav-link px-2 link-secondary"><fmt:message key="header.nav.Home"/></a></li>
+            <li><a href="<%= request.getContextPath() %>/users" class="nav-link px-2 link-dark"><fmt:message key="header.nav.Users"/></a></li>
+            <li><a href="<%= request.getContextPath() %>/tour_add" class="nav-link px-2 link-dark"><fmt:message key="header.nav.NewTour"></a></li>
+            <li><a href="<%= request.getContextPath() %>/hotels" class="nav-link px-2 link-dark"><fmt:message key="header.nav.Hotels"></a></li>
+            <li><a href="<%= request.getContextPath() %>/hotel_add" class="nav-link px-2 link-dark"><fmt:message key="header.nav.NewHotels"></a></li>
         </ul>
         <c:if test="${sessionScope.user == null}">
         <div class="col-md-3 text-end">

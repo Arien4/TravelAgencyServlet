@@ -1,7 +1,7 @@
 package org.olenazaviriukha.travel.controller;
 
-import org.olenazaviriukha.travel.dao.UserDAO;
-import org.olenazaviriukha.travel.entity.User;
+import org.olenazaviriukha.travel.users.dao.UserDAO;
+import org.olenazaviriukha.travel.users.models.User;
 import org.olenazaviriukha.travel.utils.SecurityUtils;
 
 import javax.servlet.ServletException;
@@ -49,9 +49,8 @@ public class LoginServlet extends HttpServlet {
         String email = req.getParameter(EMAIL);
         String password = req.getParameter(PASSWORD);
         String remember = req.getParameter(REMEMBER); // "on" or ""
-//        String remember = String.valueOf(req.getAttribute(REMEMBER)); // "checked" or ""
 
-        User user = UserDAO.findUserByEmail(email);
+        User user = UserDAO.getUserByEmail(email);
         try {
             if (user == null) {
                 // authentication error: no such user

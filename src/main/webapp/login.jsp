@@ -7,15 +7,15 @@
 --%>
 <%@ page isELIgnored="false" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="fmt"%>--%>
 <!DOCTYPE html>
 <html>
-<jsp:include page="head_section.jsp" />
+<jsp:include page="head_section.jsp"/>
 
 <body>
-<jsp:include page="header.jsp" />
+<jsp:include page="header.jsp"/>
 <div class="text-center container">
     <main class="form-signin">
         <form method="post">
@@ -26,19 +26,19 @@
                 <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                       name="password">
                 <label for="floatingPassword" ${requestScope.error != null ? 'class="is-invalid"' : ''}>Password</label>
                 <c:if test="${requestScope.error != null}">
                     <div class="invalid-feedback">
-                        <c:out value="${requestScope.error}" />
+                        <c:out value="${requestScope.error}"/>
                     </div>
                 </c:if>
             </div>
 
             <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" name="remember" id="rememberInput" ${requestScope.remember}> Remember me
-                </label>
+                <input class="form-check-input" type="checkbox" name="remember"
+                       id="rememberInput" ${requestScope.remember}> Remember me
             </div>
             <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
 

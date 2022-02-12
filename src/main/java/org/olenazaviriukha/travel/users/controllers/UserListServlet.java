@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.controller;
+package org.olenazaviriukha.travel.users.controllers;
 
 import org.olenazaviriukha.travel.users.dao.UserDAO;
 import org.olenazaviriukha.travel.users.models.User;
@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/main")
-public class MainPageServlet extends HttpServlet {
+@WebServlet({"/users"})
+public class UserListServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<User> users = UserDAO.getAllUsers();
         req.setAttribute("users", users);
         getServletContext().getRequestDispatcher("/JSP/users/user_list.jsp").forward(req, resp);
-
     }
 }

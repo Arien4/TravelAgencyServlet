@@ -1,6 +1,6 @@
 <%@ page import="org.olenazaviriukha.travel.utils.SecurityUtils" %>
-<%@ page import="org.olenazaviriukha.travel.entity.User" %>
-<%@ page import="org.olenazaviriukha.travel.dao.UserDAO" %>
+<%@ page import="org.olenazaviriukha.travel.users.models.User" %>
+<%@ page import="org.olenazaviriukha.travel.users.dao.UserDAO" %>
 <%@ page import="org.olenazaviriukha.travel.entity.Hotel" %>
 <%@ page import="org.olenazaviriukha.travel.dao.HotelDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

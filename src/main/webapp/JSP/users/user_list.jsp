@@ -9,13 +9,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
-<jsp:include page="head_section.jsp"/>
+<jsp:include page="../../head_section.jsp"/>
 <body>
-<jsp:include page="header.jsp"/>
-
-
-<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
-
+<jsp:include page="../../header.jsp"/>
 <div class="container">
     <h3 class="text-center">List of Users</h3>
 
@@ -26,8 +22,8 @@
             <th>Email</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <%--                <th>Role</th>--%>
-            <%--                <th>Actions</th>--%>
+            <th>Role</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -38,11 +34,8 @@
                 <td><c:out value="${user.email}"/></td>
                 <td><c:out value="${user.firstName}"/></td>
                 <td><c:out value="${user.lastName}"/></td>
-                    <%--                    <td><c:out value="${user.email}" /></td>--%>
-                    <%--                    <td><c:out value="${user.country}" /></td>--%>
-                <td><a href="edit?id=<c:out value='${user.id}' />">Edit</a>
-                    &nbsp;&nbsp;&nbsp;&nbsp; <a
-                            href="delete?id=<c:out value='${user.id}' />">Delete</a></td>
+                <td><c:out value="${user.role.name}"/></td>
+                <td><a href="<%= request.getContextPath() %>/user/edit?user_id=<c:out value='${user.id}' />">Edit</a>
             </tr>
         </c:forEach>
 

@@ -2,7 +2,6 @@ package org.olenazaviriukha.travel.dao;
 
 import org.olenazaviriukha.travel.db.DataSource;
 import org.olenazaviriukha.travel.entity.Hotel;
-import org.olenazaviriukha.travel.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,15 +9,22 @@ import java.util.List;
 
 public class HotelDAO {
     private static final String SQL_GET_ALL_HOTELS =
-            "SELECT * from hotels";
-    private static final String SQL_GET_HOTEL_BY_NAME = SQL_GET_ALL_HOTELS + " WHERE LOWER(hotels.name)=LOWER(?)";
-    private static final String SQL_GET_HOTEL_BY_ID = SQL_GET_ALL_HOTELS + " WHERE hotels.id=?";
+            "SELECT * from hotel";
+    private static final String SQL_GET_HOTEL_BY_NAME = SQL_GET_ALL_HOTELS + " WHERE LOWER(hotel.name)=LOWER(?)";
+    private static final String SQL_GET_HOTEL_BY_ID = SQL_GET_ALL_HOTELS + " WHERE hotel.id=?";
 
-    private static final String SQL_INSERT_HOTEL = "INSERT INTO hotels" + "(name, hotel_type, description) VALUES " + "(?, ?, ?)";
+    private static final String SQL_INSERT_HOTEL =
+            "INSERT INTO hotel (name, hotel_type, description, image) " +
+                    "VALUES " + "(?, ?, ?, ?)";
+    private static final String SQL_UPDATE_HOTEL =
+            "UPDATE hotel " +
+                    "SET name=?, hotel_type=?, description=?, image=?" +
+                    "WHERE id=?";
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_HOTEL_TYPE = "hotel_type";
     private static final String FIELD_DESCRIPTION = "description";
+    private static final String FIELD_IMAGE = "image";
 
 
     public static Hotel findHotelByName(String name) {
@@ -52,7 +58,7 @@ public class HotelDAO {
         return hotel;
     }
 
-        public static List<Hotel> getAllHotels() {
+    public static List<Hotel> getAllHotels() {
         List<Hotel> hotels = new ArrayList<>();
 
         try (Connection con = DataSource.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_GET_ALL_HOTELS); ResultSet rs = pst.executeQuery()) {
@@ -74,6 +80,7 @@ public class HotelDAO {
             preparedStatement.setString(1, hotel.getName());
             preparedStatement.setInt(2, hotel.getHotelType());
             preparedStatement.setString(3, hotel.getDescription());
+            preparedStatement.setString(4, hotel.getImage());
 
             result = preparedStatement.executeUpdate();
         } catch (SQLIntegrityConstraintViolationException e) {
@@ -92,9 +99,32 @@ public class HotelDAO {
             hotel.setName(rs.getString(FIELD_NAME));
             hotel.setHotelType(rs.getInt(FIELD_HOTEL_TYPE));
             hotel.setDescription(rs.getString(FIELD_DESCRIPTION));
+            hotel.setImage(rs.getString(FIELD_IMAGE));
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
         return hotel;
+    }
+
+    public static int updateHotel(Hotel hotel) throws DuplicateKeyException {
+        int result = 0;
+
+        try (Connection con = DataSource.getConnection();
+             PreparedStatement preparedStatement = con.prepareStatement(SQL_UPDATE_HOTEL)) {
+
+            preparedStatement.setString(1, hotel.getName());
+            preparedStatement.setInt(2, hotel.getHotelType());
+            preparedStatement.setString(3, hotel.getDescription());
+            preparedStatement.setString(4, hotel.getImage());
+            preparedStatement.setInt(5, hotel.getId());
+
+            result = preparedStatement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new DuplicateKeyException("name", "Hotel with provided name currently exists");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+
     }
 }

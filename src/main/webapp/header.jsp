@@ -15,8 +15,8 @@
         </a>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>
+            <li><a href="<%= request.getContextPath() %>/" class="nav-link px-2 link-secondary">Home</a></li>
+            <li><a href="<%= request.getContextPath() %>/users" class="nav-link px-2 link-dark">Users</a></li>
             <li><a href="<%= request.getContextPath() %>/tour_add" class="nav-link px-2 link-dark">New Tour</a></li>
             <li><a href="<%= request.getContextPath() %>/hotels" class="nav-link px-2 link-dark">Hotels</a></li>
             <li><a href="<%= request.getContextPath() %>/hotel_add" class="nav-link px-2 link-dark">New Hotel</a></li>

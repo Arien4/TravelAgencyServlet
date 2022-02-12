@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.entity;
+package org.olenazaviriukha.travel.users.models;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,7 +8,8 @@ public class User implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
-    private String role;
+    private Role role;
+    private Integer roleId;
     private String password;
     private Boolean blocked;
 
@@ -18,6 +19,15 @@ public class User implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getRoleId() {
+        if (role != null) return role.getId();
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public String getEmail() {
@@ -44,12 +54,13 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
+        this.roleId = role.getId();
     }
 
     public String getPassword() {

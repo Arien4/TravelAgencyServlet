@@ -42,8 +42,7 @@ public class Hotel implements Serializable {
     }
 
     public String getImage() {
-        if (image != null) return image;
-        return "/images/hotels/default.jpg";
+        return image;
     }
 
     public void setImage(String image) {

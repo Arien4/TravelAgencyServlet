@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TourDAO {
-    private static final String SQL_GET_ALL_TOURS = "SELECT \n" + "    tours.id, " + "    tours.name, " + "    tours.tour_type," + "    tours.guests_number," + "    hotels.name, " + "    hotels.hotel_type, " + "    tours.guests_number, " + "    tours.start_day, " + "    tours.end_day, " + "    tours.price, " + "    tours.max_discount, " + "    tours.discount_step, " + "    tours.hot, " + "    tours.description " + "FROM " + "    tours " + "        LEFT JOIN " + "    hotels ON tours.hotel_id = hotels.id";
+    private static final String SQL_GET_ALL_TOURS = "SELECT \n" + "    tour.id, " + "    tour.name, " + "    tour.tour_type," + "    tour.guests_number," + "    hotel.name, " + "    hotel.hotel_type, " + "    tour.guests_number, " + "    tour.start_day, " + "    tour.end_day, " + "    tour.price, " + "    tour.max_discount, " + "    tour.discount_step, " + "    tour.hot, " + "    tour.description " + "FROM " + "    tour " + "        LEFT JOIN " + "    hotel ON tour.hotel_id = hotel.id";
     //    private static final String SQL_GET_HOTEL_BY_NAME = SQL_GET_ALL_HOTELS + " WHERE LOWER(hotels.name)=LOWER(?)";
-    private static final String SQL_GET_TOUR_BY_ID = SQL_GET_ALL_TOURS + " WHERE tours.id=?";
+    private static final String SQL_GET_TOUR_BY_ID = SQL_GET_ALL_TOURS + " WHERE tour.id=?";
     //
-    private static final String SQL_INSERT_TOUR = "INSERT INTO tours" + "(name, tour_type,  hotel_id, guests_number, start_day, end_day, price, max_discount, discount_step," + "hot, description) " + "VALUES " + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_TOUR = "INSERT INTO tour" + "(name, tour_type,  hotel_id, guests_number, start_day, end_day, price, max_discount, discount_step," + "hot, description) " + "VALUES " + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_TOUR_TYPE = "tour_type";

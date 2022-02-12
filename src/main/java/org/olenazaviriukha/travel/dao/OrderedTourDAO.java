@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderedTourDAO {
-    private static final String SQL_GET_ALL_ORDERED_TOURS = "SELECT * FROM ordered_tours";
-    private static final String SQL_GET_ORDERED_TOUR_BY_ID = SQL_GET_ALL_ORDERED_TOURS + " WHERE ordered_tours.id=?";
+    private static final String SQL_GET_ALL_ORDERED_TOURS = "SELECT * FROM ordered_tour";
+    private static final String SQL_GET_ORDERED_TOUR_BY_ID = SQL_GET_ALL_ORDERED_TOURS + " WHERE ordered_tour.id=?";
 //    //
 //    private static final String SQL_INSERT_TOUR = "INSERT INTO tours" + "(name, tour_type,  hotel_id, guests_number, start_day, end_day, price, max_discount, discount_step," + "hot, description) " + "VALUES " + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String FIELD_ID = "id";

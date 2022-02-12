@@ -1,6 +1,6 @@
 package org.olenazaviriukha.travel.controller.exceptions;
 
-import org.olenazaviriukha.travel.entity.User;
+import org.olenazaviriukha.travel.users.models.User;
 
 import java.util.Map;
 

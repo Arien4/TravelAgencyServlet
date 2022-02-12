@@ -19,7 +19,7 @@
 
 
 <!--    <listener>-->
-<!--        <listener-class>org.olenazaviriukha.travel.listener.ContextListener</listener-class>-->
+<!--        <listener-class>org.olenazaviriukha.travel.common.listener.ContextListener</listener-class>-->
 <!--    </listener>-->
 <!--    <context-param>-->
 <!--        <param-name>url</param-name>-->

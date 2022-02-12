@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.listener;
+package org.olenazaviriukha.travel.common.listener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

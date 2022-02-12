@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.controller.exceptions;
+package org.olenazaviriukha.travel.common.exceptions;
 
 import java.util.Map;
 

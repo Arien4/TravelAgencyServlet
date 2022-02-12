@@ -1,9 +1,9 @@
-package org.olenazaviriukha.travel.controller;
+package org.olenazaviriukha.travel.hotels.controller;
 
-import org.olenazaviriukha.travel.controller.exceptions.HotelValidationException;
+import org.olenazaviriukha.travel.common.exceptions.ValidationException;
 import org.olenazaviriukha.travel.dao.DuplicateKeyException;
-import org.olenazaviriukha.travel.dao.HotelDAO;
-import org.olenazaviriukha.travel.entity.Hotel;
+import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
+import org.olenazaviriukha.travel.hotels.model.Hotel;
 import org.olenazaviriukha.travel.utils.ValidationUtils;
 
 import javax.servlet.ServletException;
@@ -12,10 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +27,8 @@ public class HotelEditServlet extends HttpServlet {
     private static final String HOTEL_TYPE = "hotel_type";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URL = "/images/hotels/";
-    private static final String IMAGE_PATH = "images\\hotels\\";
-
+//    private static final String IMAGE_PATH = "images\\hotels\\";
+//
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer hotelId = null;
@@ -45,7 +42,7 @@ public class HotelEditServlet extends HttpServlet {
             req.setAttribute("hotel", hotel);
         }
 
-        req.getRequestDispatcher("/hotel_add.jsp").forward(req, resp);
+        req.getRequestDispatcher("/JSP/hotels/hotel_edit.jsp").forward(req, resp);
     }
 
     @Override
@@ -53,10 +50,10 @@ public class HotelEditServlet extends HttpServlet {
         Hotel hotel = null;
         try {
             hotel = getHotelFromRequest(req);
-        } catch (HotelValidationException e) {
+        } catch (ValidationException e) {
             req.setAttribute("errors", e.getErrors());
-            req.setAttribute("hotel", e.getHotel());
-            getServletContext().getRequestDispatcher("/hotel_add.jsp").forward(req, resp);
+            req.setAttribute("hotel", e.getObject());
+            getServletContext().getRequestDispatcher("/JSP/hotels/hotel_edit.jsp").forward(req, resp);
             return;
         } catch (Exception e) {
             // Error reading hotel from request
@@ -70,7 +67,7 @@ public class HotelEditServlet extends HttpServlet {
             errors.put(e.getParam(), e.getMessage());
             req.setAttribute("errors", errors);
             req.setAttribute("hotel", hotel);
-            getServletContext().getRequestDispatcher("/hotel_add.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/JSP/hotels/hotel_edit.jsp").forward(req, resp);
             return;
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,19 +103,19 @@ public class HotelEditServlet extends HttpServlet {
 
         String description = req.getParameter(DESCRIPTION);
         hotel.setDescription(description);
-        FileSystem fs = FileSystems.getDefault();
+//        FileSystem fs = FileSystems.getDefault();
 
-        Part filePart = req.getPart("image");
-        if (filePart.getSize() > 0) {
-            String fileName = filePart.getSubmittedFileName();
-            hotel.setImage(IMAGE_URL + "_" + fileName);
-            for (Part part : req.getParts()) {
-                part.write(IMAGE_PATH + "_" + fileName);
-            }
-        }
+//        Part filePart = req.getPart("image");
+//        if (filePart.getSize() > 0) {
+//            String fileName = filePart.getSubmittedFileName();
+//            hotel.setImage(IMAGE_URL + "_" + fileName);
+//            for (Part part : req.getParts()) {
+////                part.write(IMAGE_PATH + "_" + fileName);
+//            }
+//        }
 
         if (errors.isEmpty()) return hotel;
-        throw new HotelValidationException(hotel, errors);
+        throw new ValidationException(hotel, errors);
     }
 
 }

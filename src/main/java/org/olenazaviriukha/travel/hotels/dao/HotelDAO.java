@@ -1,7 +1,8 @@
-package org.olenazaviriukha.travel.dao;
+package org.olenazaviriukha.travel.hotels.dao;
 
+import org.olenazaviriukha.travel.dao.DuplicateKeyException;
 import org.olenazaviriukha.travel.db.DataSource;
-import org.olenazaviriukha.travel.entity.Hotel;
+import org.olenazaviriukha.travel.hotels.model.Hotel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class HotelDAO {
                     "VALUES " + "(?, ?, ?, ?)";
     private static final String SQL_UPDATE_HOTEL =
             "UPDATE hotel " +
-                    "SET name=?, hotel_type=?, description=?, image=?" +
+                    "SET name=?, hotel_type=?, description=?, image=? " +
                     "WHERE id=?";
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";

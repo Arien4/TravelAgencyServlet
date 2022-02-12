@@ -1,7 +1,7 @@
-package org.olenazaviriukha.travel.controller;
+package org.olenazaviriukha.travel.hotels.controller;
 
-import org.olenazaviriukha.travel.dao.HotelDAO;
-import org.olenazaviriukha.travel.entity.Hotel;
+import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
+import org.olenazaviriukha.travel.hotels.model.Hotel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +17,6 @@ public class HotelListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Hotel> hotels = HotelDAO.getAllHotels();
         req.setAttribute("hotels", hotels);
-        getServletContext().getRequestDispatcher("/hotel_list.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/JSP/hotels/hotel_list.jsp").forward(req, resp);
     }
 }

@@ -1,6 +1,7 @@
 package org.olenazaviriukha.travel.entity;
 
-import org.olenazaviriukha.travel.dao.HotelDAO;
+import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
+import org.olenazaviriukha.travel.hotels.model.Hotel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

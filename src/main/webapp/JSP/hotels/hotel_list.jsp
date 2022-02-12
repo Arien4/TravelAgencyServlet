@@ -9,9 +9,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
-<jsp:include page="head_section.jsp" />
+<jsp:include page="../../head_section.jsp" />
 <body>
-<jsp:include page="header.jsp" />
+<jsp:include page="../../header.jsp" />
 <div class="container">
 <table class="table table-striped table-hover">
     <caption>Hotel list</caption>

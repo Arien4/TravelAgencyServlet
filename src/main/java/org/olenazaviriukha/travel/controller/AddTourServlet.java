@@ -1,7 +1,7 @@
 package org.olenazaviriukha.travel.controller;
 
-import org.olenazaviriukha.travel.controller.exceptions.ValidationException;
-import org.olenazaviriukha.travel.dao.HotelDAO;
+import org.olenazaviriukha.travel.common.exceptions.ValidationException;
+import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
 import org.olenazaviriukha.travel.dao.TourDAO;
 import org.olenazaviriukha.travel.entity.Tour;
 import org.olenazaviriukha.travel.utils.ValidationUtils;

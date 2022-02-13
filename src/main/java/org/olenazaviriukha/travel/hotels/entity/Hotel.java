@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.hotels.model;
+package org.olenazaviriukha.travel.hotels.entity;
 
 import java.io.Serializable;
 

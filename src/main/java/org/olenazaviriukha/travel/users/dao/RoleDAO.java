@@ -1,7 +1,7 @@
 package org.olenazaviriukha.travel.users.dao;
 
-import org.olenazaviriukha.travel.db.DataSource;
-import org.olenazaviriukha.travel.users.models.Role;
+import org.olenazaviriukha.travel.common.db.DataSource;
+import org.olenazaviriukha.travel.users.entity.Role;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

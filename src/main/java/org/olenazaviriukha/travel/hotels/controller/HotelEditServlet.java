@@ -3,8 +3,8 @@ package org.olenazaviriukha.travel.hotels.controller;
 import org.olenazaviriukha.travel.common.exceptions.ValidationException;
 import org.olenazaviriukha.travel.dao.DuplicateKeyException;
 import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
-import org.olenazaviriukha.travel.hotels.model.Hotel;
-import org.olenazaviriukha.travel.utils.ValidationUtils;
+import org.olenazaviriukha.travel.hotels.entity.Hotel;
+import org.olenazaviriukha.travel.common.utils.ValidationUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -38,7 +38,7 @@ public class HotelEditServlet extends HttpServlet {
         }
         ;
         if (hotelId != null) {
-            Hotel hotel = HotelDAO.findHotelById(hotelId);
+            Hotel hotel = HotelDAO.getHotelById(hotelId);
             req.setAttribute("hotel", hotel);
         }
 
@@ -59,6 +59,7 @@ public class HotelEditServlet extends HttpServlet {
             // Error reading hotel from request
             e.printStackTrace();
         }
+
         try {
             if (hotel.getId() == null) HotelDAO.createHotel(hotel);
             else HotelDAO.updateHotel(hotel);

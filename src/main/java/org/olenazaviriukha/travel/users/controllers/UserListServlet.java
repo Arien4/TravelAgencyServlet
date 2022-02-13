@@ -1,7 +1,7 @@
 package org.olenazaviriukha.travel.users.controllers;
 
 import org.olenazaviriukha.travel.users.dao.UserDAO;
-import org.olenazaviriukha.travel.users.models.User;
+import org.olenazaviriukha.travel.users.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -15,7 +15,7 @@
 <div class="container">
 <%--    <c:out value="${sessionScope.locale}"/>--%>
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <div class="col-md-3 text-end">
+        <div class="col-md-3 text-start">
             <a href="<%= request.getContextPath() %>/?lang_code=ua" role="button" class="btn btn-outline-primary">Укр</a>
             <a href="<%= request.getContextPath() %>/?lang_code=en" role="button" class="btn btn-outline-primary">En</a>
         </div>
@@ -25,6 +25,7 @@
             <li><a href="<%= request.getContextPath() %>/" class="nav-link px-2 link-secondary"><fmt:message key="header.nav.Home"/></a></li>
             <li><a href="<%= request.getContextPath() %>/users" class="nav-link px-2 link-dark"><fmt:message key="header.nav.Users"/></a></li>
             <li><a href="<%= request.getContextPath() %>/tour_add" class="nav-link px-2 link-dark"><fmt:message key="header.nav.NewTour"/></a></li>
+            <li><a href="<%= request.getContextPath() %>/tours" class="nav-link px-2 link-dark"><fmt:message key="header.nav.Tours"/></a></li>
             <li><a href="<%= request.getContextPath() %>/hotels" class="nav-link px-2 link-dark"><fmt:message key="header.nav.Hotels"/></a></li>
             <li><a href="<%= request.getContextPath() %>/hotel_add" class="nav-link px-2 link-dark"><fmt:message key="header.nav.NewHotels"/></a></li>
         </ul>

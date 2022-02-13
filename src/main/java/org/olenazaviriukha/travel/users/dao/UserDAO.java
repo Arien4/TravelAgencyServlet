@@ -1,9 +1,9 @@
 package org.olenazaviriukha.travel.users.dao;
 
 import org.olenazaviriukha.travel.dao.DuplicateKeyException;
-import org.olenazaviriukha.travel.db.DataSource;
-import org.olenazaviriukha.travel.users.models.Role;
-import org.olenazaviriukha.travel.users.models.User;
+import org.olenazaviriukha.travel.common.db.DataSource;
+import org.olenazaviriukha.travel.users.entity.Role;
+import org.olenazaviriukha.travel.users.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;

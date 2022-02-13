@@ -12,14 +12,22 @@
 
 <!DOCTYPE html>
 <html>
-<jsp:include page="head_section.jsp"/>
+<jsp:include page="../../head_section.jsp"/>
 <body>
-<jsp:include page="header.jsp"/>
+<jsp:include page="../../header.jsp"/>
 <div class="container">
-    <h1>Add New Tour Form</h1>
+    <c:choose>
+        <c:when test="${tour == null || tour.id ==null}">
+            <h1>Add New Tour Form</h1>
+        </c:when>
+        <c:when test="${tour.id != null}">
+            <h1>Edit Tour Form</h1>
+        </c:when>
+    </c:choose>
+
     <form class="needs-validation" action="<%= request.getContextPath() %>/tour_add" method="post"
           enctype="application/x-www-form-urlencoded">
-
+        <input name="tour_id" type="hidden" value="${tour.id}">
         <div class="mb-3">
             <label for="nameInput" class="form-label">Name</label>
             <div class="input-group">

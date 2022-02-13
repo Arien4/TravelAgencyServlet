@@ -1,8 +1,8 @@
 package org.olenazaviriukha.travel.hotels.dao;
 
 import org.olenazaviriukha.travel.dao.DuplicateKeyException;
-import org.olenazaviriukha.travel.db.DataSource;
-import org.olenazaviriukha.travel.hotels.model.Hotel;
+import org.olenazaviriukha.travel.common.db.DataSource;
+import org.olenazaviriukha.travel.hotels.entity.Hotel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class HotelDAO {
 
     }
 
-    public static Hotel findHotelById(Integer id) {
+    public static Hotel getHotelById(Integer id) {
 
         Hotel hotel = null;
         try (Connection con = DataSource.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_GET_HOTEL_BY_ID)) {
@@ -108,7 +108,7 @@ public class HotelDAO {
     }
 
     public static int updateHotel(Hotel hotel) throws DuplicateKeyException {
-        int result = 0;
+        int rowsAffected = 0;
 
         try (Connection con = DataSource.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(SQL_UPDATE_HOTEL)) {
@@ -119,13 +119,13 @@ public class HotelDAO {
             preparedStatement.setString(4, hotel.getImage());
             preparedStatement.setInt(5, hotel.getId());
 
-            result = preparedStatement.executeUpdate();
+            rowsAffected = preparedStatement.executeUpdate();
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new DuplicateKeyException("name", "Hotel with provided name currently exists");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return result;
+        return rowsAffected;
 
     }
 }

@@ -1,8 +1,8 @@
 package org.olenazaviriukha.travel.dao;
 
-import org.olenazaviriukha.travel.db.DataSource;
+import org.olenazaviriukha.travel.common.db.DataSource;
 import org.olenazaviriukha.travel.entity.OrderedTour;
-import org.olenazaviriukha.travel.entity.Tour;
+import org.olenazaviriukha.travel.tours.entity.Tour;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,6 +1,4 @@
-package org.olenazaviriukha.travel.utils;
-
-import org.apache.commons.codec.binary.Hex;
+package org.olenazaviriukha.travel.common.utils;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;

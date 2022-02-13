@@ -1,7 +1,9 @@
-package org.olenazaviriukha.travel.hotels.controller;
+package org.olenazaviriukha.travel.tours.controller;
 
 import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
 import org.olenazaviriukha.travel.hotels.entity.Hotel;
+import org.olenazaviriukha.travel.tours.dao.TourDAO;
+import org.olenazaviriukha.travel.tours.entity.Tour;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,12 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/hotels")
-public class HotelListServlet extends HttpServlet {
+@WebServlet("/tours")
+public class TourListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Hotel> hotels = HotelDAO.getAllHotels();
-        req.setAttribute("hotels", hotels);
-        getServletContext().getRequestDispatcher("/JSP/hotels/hotel_list.jsp").forward(req, resp);
+        List<Tour> tours = TourDAO.getAllTours();
+        req.setAttribute("tours", tours);
+        getServletContext().getRequestDispatcher("/JSP/tours/tour_list.jsp").forward(req, resp);
     }
 }

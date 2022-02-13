@@ -1,7 +1,7 @@
-package org.olenazaviriukha.travel.entity;
+package org.olenazaviriukha.travel.tours.entity;
 
 import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
-import org.olenazaviriukha.travel.hotels.model.Hotel;
+import org.olenazaviriukha.travel.hotels.entity.Hotel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -64,7 +64,7 @@ public class Tour implements Serializable {
 
     public Hotel getHotel() {
         if (this.hotel == null && this.hotelId != null)
-            return HotelDAO.findHotelById(this.hotelId);
+            return HotelDAO.getHotelById(this.hotelId);
         return hotel;
     }
 

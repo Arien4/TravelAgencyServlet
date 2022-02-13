@@ -4,10 +4,10 @@ import org.olenazaviriukha.travel.controller.exceptions.UserValidationException;
 import org.olenazaviriukha.travel.dao.DuplicateKeyException;
 import org.olenazaviriukha.travel.users.dao.RoleDAO;
 import org.olenazaviriukha.travel.users.dao.UserDAO;
-import org.olenazaviriukha.travel.users.models.Role;
-import org.olenazaviriukha.travel.users.models.User;
-import org.olenazaviriukha.travel.utils.SecurityUtils;
-import org.olenazaviriukha.travel.utils.ValidationUtils;
+import org.olenazaviriukha.travel.users.entity.Role;
+import org.olenazaviriukha.travel.users.entity.User;
+import org.olenazaviriukha.travel.common.utils.SecurityUtils;
+import org.olenazaviriukha.travel.common.utils.ValidationUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

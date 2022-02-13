@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.utils;
+package org.olenazaviriukha.travel.common.utils;
 
 import org.apache.commons.validator.routines.EmailValidator;
 

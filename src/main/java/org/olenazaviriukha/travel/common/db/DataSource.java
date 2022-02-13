@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.db;
+package org.olenazaviriukha.travel.common.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

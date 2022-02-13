@@ -1,10 +1,12 @@
-package org.olenazaviriukha.travel.controller;
+package org.olenazaviriukha.travel.tours.controller;
 
 import org.olenazaviriukha.travel.common.exceptions.ValidationException;
+import org.olenazaviriukha.travel.dao.DuplicateKeyException;
 import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
-import org.olenazaviriukha.travel.dao.TourDAO;
-import org.olenazaviriukha.travel.entity.Tour;
-import org.olenazaviriukha.travel.utils.ValidationUtils;
+import org.olenazaviriukha.travel.tours.dao.TourDAO;
+import org.olenazaviriukha.travel.tours.entity.Tour;
+import org.olenazaviriukha.travel.common.utils.ValidationUtils;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +20,8 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/tour_add")
-public class AddTourServlet extends HttpServlet {
+@WebServlet({"/tour_add", "/tour_edit"})
+public class TourEditServlet extends HttpServlet {
     private static final String NAME = "name";
     private static final String TOUR_TYPE = "tour_type";
     private static final String HOTEL_ID = "hotel_id";
@@ -44,36 +46,52 @@ public class AddTourServlet extends HttpServlet {
         setRequestDefaultValues(req);
     }
 
-    ;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.setRequestDefaultValues(req);
-        req.getRequestDispatcher("/tour_add.jsp").forward(req, resp);
+        Integer tourId = null;
+        try {
+            tourId = Integer.valueOf(req.getParameter("tour_id"));
+        } catch (NumberFormatException e) {}
+
+        if (tourId != null) {
+            Tour tour = TourDAO.getTourById(tourId);
+            req.setAttribute("tour", tour);
+        }
+
+        req.getRequestDispatcher("/JSP/tours/tour_edit.jsp").forward(req, resp);
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         Tour tour = null;
         try {
             tour = getTourFromRequest(req);
         } catch (ValidationException e) {
             setRequestValues(req, (Tour) e.getObject(), e.getErrors());
-            getServletContext().getRequestDispatcher("/tour_add.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/JSP/tours/tour_edit.jsp").forward(req, resp);
             return;
         } catch (Exception e) {
             // Error reading tour from request
             e.printStackTrace();
         }
+
         try {
-            TourDAO.createTour(tour);
+            if (tour.getId() == null) TourDAO.createTour(tour);
+            else TourDAO.updateTour(tour);
+        } catch (DuplicateKeyException e) {
+            Map<String, String> errors = new HashMap<>();
+            errors.put(e.getParam(), e.getMessage());
+            req.setAttribute("errors", errors);
+            req.setAttribute("tour", tour);
+            getServletContext().getRequestDispatcher("/JSP/tours/tour_edit.jsp").forward(req, resp);
+            return;
         } catch (Exception e) {
             setRequestValues(req, tour, null);
-            getServletContext().getRequestDispatcher("/tour_add.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/tour_edit.jsp").forward(req, resp);
             return;
         }
-        resp.sendRedirect("/tours");
+        resp.sendRedirect(req.getContextPath() + "/tours");
     }
 
     /**
@@ -100,7 +118,6 @@ public class AddTourServlet extends HttpServlet {
 
         }
         tour.setGuestsNumber(guests);
-
         String guestsNumberError = ValidationUtils.guestsNumberValidationError(guests);
         if (guestsNumberError != null) errors.put(GUESTS_NUMBER, guestsNumberError);
 

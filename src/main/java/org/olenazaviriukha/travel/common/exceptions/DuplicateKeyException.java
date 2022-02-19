@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.dao;
+package org.olenazaviriukha.travel.common.exceptions;
 
 public class DuplicateKeyException extends Exception {
     String param;

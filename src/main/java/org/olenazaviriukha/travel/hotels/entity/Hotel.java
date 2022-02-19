@@ -21,6 +21,12 @@ public class Hotel implements Serializable {
         return name;
     }
 
+    public String getHotelName() {
+        String fullName = name;
+        if (this.hotelType != null && this.hotelType > 0) fullName += " " + this.hotelType + "*";
+        return fullName;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

@@ -1,7 +1,7 @@
 package org.olenazaviriukha.travel.tours.controller;
 
 import org.olenazaviriukha.travel.common.exceptions.ValidationException;
-import org.olenazaviriukha.travel.dao.DuplicateKeyException;
+import org.olenazaviriukha.travel.common.exceptions.DuplicateKeyException;
 import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
 import org.olenazaviriukha.travel.tours.dao.TourDAO;
 import org.olenazaviriukha.travel.tours.entity.Tour;
@@ -22,6 +22,7 @@ import java.util.Map;
 
 @WebServlet({"/tour_add", "/tour_edit"})
 public class TourEditServlet extends HttpServlet {
+    private static final String TOUR_ID = "tour_id";
     private static final String NAME = "name";
     private static final String TOUR_TYPE = "tour_type";
     private static final String HOTEL_ID = "hotel_id";
@@ -48,6 +49,7 @@ public class TourEditServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // зробити переадресацію, якщо незалогінений користувач або кастомер?
         this.setRequestDefaultValues(req);
         Integer tourId = null;
         try {
@@ -88,7 +90,7 @@ public class TourEditServlet extends HttpServlet {
             return;
         } catch (Exception e) {
             setRequestValues(req, tour, null);
-            getServletContext().getRequestDispatcher("/tour_edit.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/JSP/tours/tour_edit.jsp").forward(req, resp);
             return;
         }
         resp.sendRedirect(req.getContextPath() + "/tours");
@@ -102,6 +104,12 @@ public class TourEditServlet extends HttpServlet {
     private Tour getTourFromRequest(HttpServletRequest req) throws Exception {
         Tour tour = new Tour();
         Map<String, String> errors = new HashMap<>();
+
+        Integer tourId = null;
+        try {
+            tourId = Integer.valueOf(req.getParameter(TOUR_ID));
+        } catch (NumberFormatException ignored) {}
+        tour.setId(tourId);
 
         tour.setName(req.getParameter(NAME));
         tour.setTourType(Tour.TourType.valueOf(req.getParameter(TOUR_TYPE)));
@@ -160,7 +168,7 @@ public class TourEditServlet extends HttpServlet {
         tour.setMaxDiscount(maxDiscount);
         if (maxDiscountError != null) errors.put(MAX_DISCOUNT, maxDiscountError);
 
-        Integer discountStep = null;
+        int discountStep;
         try {
             discountStep = Integer.parseInt(req.getParameter(DISCOUNT_STEP));
         } catch (NumberFormatException e) {
@@ -170,7 +178,7 @@ public class TourEditServlet extends HttpServlet {
         String discountStepError = ValidationUtils.discountStepValidationError(discountStep, maxDiscount);
         if (discountStepError != null) errors.put(DISCOUNT_STEP, discountStepError);
 
-        tour.setHot(req.getParameter(HOT).equals("on"));
+        tour.setHot(req.getParameter(HOT) != null);
 
         tour.setDescription(req.getParameter(DESCRIPTION));
 

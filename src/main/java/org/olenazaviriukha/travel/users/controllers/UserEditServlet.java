@@ -1,7 +1,7 @@
 package org.olenazaviriukha.travel.users.controllers;
 
-import org.olenazaviriukha.travel.controller.exceptions.UserValidationException;
-import org.olenazaviriukha.travel.dao.DuplicateKeyException;
+import org.olenazaviriukha.travel.common.exceptions.ValidationException;
+import org.olenazaviriukha.travel.common.exceptions.DuplicateKeyException;
 import org.olenazaviriukha.travel.users.dao.RoleDAO;
 import org.olenazaviriukha.travel.users.dao.UserDAO;
 import org.olenazaviriukha.travel.users.entity.Role;
@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,9 +76,9 @@ public class UserEditServlet extends HttpServlet {
         User user = null;
         try {
             user = getUserFromRequest(req);
-        } catch (UserValidationException e) {
+        } catch (ValidationException e) {
             req.setAttribute("errors", e.getErrors());
-            req.setAttribute("user", e.getUser());
+            req.setAttribute("user", e.getObject());
             req.setAttribute("roles", RoleDAO.getAllRoles());
             setDefaultRequestAttributes(req);
             getServletContext().getRequestDispatcher("/JSP/users/user_edit.jsp").forward(req, resp);
@@ -110,9 +112,9 @@ public class UserEditServlet extends HttpServlet {
     /**
      * @param req request from doPost()
      * @return user
-     * @throws Exception if input is incorrect
+     * @throws ValidationException if input is incorrect
      */
-    private User getUserFromRequest(HttpServletRequest req) throws Exception {
+    private User getUserFromRequest(HttpServletRequest req) throws ValidationException, NoSuchAlgorithmException, InvalidKeySpecException {
         User user = new User();
         Map<String, String> errors = new HashMap<>();
         String action = req.getParameter(REQUEST_KEY_ACTION);
@@ -158,6 +160,6 @@ public class UserEditServlet extends HttpServlet {
         }
 
         if (errors.isEmpty()) return user;
-        throw new UserValidationException(user, errors);
+        throw new ValidationException(user, errors);
     }
 }

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: arien
-  Date: 2/3/2022
-  Time: 4:34 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page isELIgnored="false" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -25,8 +18,7 @@
         </c:when>
     </c:choose>
 
-    <form class="needs-validation" action="<%= request.getContextPath() %>/tour_add" method="post"
-          enctype="application/x-www-form-urlencoded">
+    <form class="needs-validation" method="post" enctype="application/x-www-form-urlencoded">
         <input name="tour_id" type="hidden" value="${tour.id}">
         <div class="mb-3">
             <label for="nameInput" class="form-label">Name</label>

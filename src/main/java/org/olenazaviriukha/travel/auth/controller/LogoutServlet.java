@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.controller;
+package org.olenazaviriukha.travel.auth.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

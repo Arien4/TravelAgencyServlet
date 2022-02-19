@@ -26,7 +26,7 @@
     <tbody>
         <c:forEach var="hotel" items="${hotels}">
             <tr>
-                <td><a href="<%= request.getContextPath() %>/hotel/${hotel.id}">${hotel.name}</a></td>
+                <td><a href="<%= request.getContextPath() %>/hotel?hotel_id=${hotel.id}">${hotel.name}</a></td>
                 <td>${hotel.hotelType}*</td>
                 <td>${hotel.description}</td>
                 <td><i class="bi bi-pencil-square"></i><a href="<%= request.getContextPath() %>/hotel_edit?hotel_id=${hotel.id}">Edit</a></td>

@@ -1,36 +1,30 @@
 package org.olenazaviriukha.travel.tours.dao;
 
-import org.olenazaviriukha.travel.dao.DuplicateKeyException;
 import org.olenazaviriukha.travel.common.db.DataSource;
-import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
+import org.olenazaviriukha.travel.common.utils.WhereClauseJoiner;
+import org.olenazaviriukha.travel.common.exceptions.DuplicateKeyException;
 import org.olenazaviriukha.travel.hotels.entity.Hotel;
 import org.olenazaviriukha.travel.tours.entity.Tour;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class TourDAO {
+    private static final String SQL_TOTAL_COUNT = "SELECT count(tour.id) as tour_count FROM tour";
     private static final String SQL_GET_ALL_TOURS = "SELECT tour.id, tour.name, tour.tour_type, " +
             "tour.guests_number, tour.hotel_id, hotel.name as hotel_name, hotel.hotel_type, tour.guests_number,  tour.start_day, " +
             "tour.end_day, tour.price, tour.max_discount, tour.discount_step, tour.hot, " +
             "tour.description " +
             "FROM tour LEFT JOIN hotel ON tour.hotel_id = hotel.id";
-    //    private static final String SQL_GET_HOTEL_BY_NAME = SQL_GET_ALL_HOTELS + " WHERE LOWER(hotels.name)=LOWER(?)";
     private static final String SQL_GET_TOUR_BY_ID = SQL_GET_ALL_TOURS + " WHERE tour.id=?";
-    //
     private static final String SQL_INSERT_TOUR = "INSERT INTO tour" + "(name, tour_type,  hotel_id, guests_number, start_day, end_day, price, max_discount, discount_step," + "hot, description) " + "VALUES " + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_TOUR = "UPDATE tour " +
             "SET name=?, tour_type=?,  hotel_id=?, guests_number=?, start_day=?, end_day=?, " +
             "price=?, max_discount=?, discount_step=?, hot=?, description=? " +
             "WHERE id=?";
-    private static final String SQL_TYPE_CONDITION = " tour_type=?";
-    private static final String SQL_PRICE_CONDITION = " price BETWEEN ? AND ?";
-    private static final String SQL_GUESTS_NUMBER_CONDITION = " guests_number BETWEEN ? AND ?";
-    private static final String SQL_HOTEL_TYPE_CONDITION = " hotel_type=?";
-
     private static final String FIELD_ID = "id";
+    private static final String FIELD_TOUR_COUNT = "tour_count";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_TOUR_TYPE = "tour_type";
     private static final String FIELD_GUESTS_NUMBER = "guests_number";
@@ -44,8 +38,7 @@ public class TourDAO {
     private static final String FIELD_DISCOUNT_STEP = "discount_step";
     private static final String FIELD_HOT = "hot";
     private static final String FIELD_DESCRIPTION = "description";
-
-
+    private static String TOURS_ORDER = " ORDER BY hot DESC, start_day ASC";
 
     public static Tour getTourById(Integer id) {
 
@@ -62,10 +55,64 @@ public class TourDAO {
         return tour;
     }
 
+    public static int getFilteredToursCount(WhereClauseJoiner queryFilter) {
+        int count = 0;
+        String whereClause = queryFilter != null ? queryFilter.getWhereClause() : "";
+        try (
+                Connection con = DataSource.getConnection();
+                PreparedStatement pst = con.prepareStatement(SQL_TOTAL_COUNT + whereClause);
+        ) {
+            if (queryFilter != null) queryFilter.fillPreparedStatement(pst);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(FIELD_TOUR_COUNT);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return count;
+    }
+
+    public static int getFilteredToursCount() {
+        return getFilteredToursCount(null);
+    }
+
+    public static List<Tour> getFilteredTours(int lim, int off) {
+        return getFilteredTours(null, lim, off);
+    }
+
+    public static List<Tour> getFilteredTours(WhereClauseJoiner whereClauseJoiner, int lim, int off) {//Paginator paginator) {
+        List<Tour> tours = new ArrayList<>();
+
+        String limit = "";
+        String offset = "";
+
+        limit = " LIMIT " + lim;
+        offset = " OFFSET " + off;
+        String whereClause = whereClauseJoiner != null ? whereClauseJoiner.getWhereClause() : "";
+        try (
+                Connection con = DataSource.getConnection();
+                PreparedStatement pst = con.prepareStatement(SQL_GET_ALL_TOURS + whereClause + TOURS_ORDER + limit + offset);
+        ) {
+            if (whereClauseJoiner != null) whereClauseJoiner.fillPreparedStatement(pst);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                tours.add(getTourFromResultSet(rs));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return tours;
+    }
+
     public static List<Tour> getAllTours() {
         List<Tour> tours = new ArrayList<>();
 
-        try (Connection con = DataSource.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_GET_ALL_TOURS); ResultSet rs = pst.executeQuery()) {
+        try (
+                Connection con = DataSource.getConnection();
+                PreparedStatement pst = con.prepareStatement(SQL_GET_ALL_TOURS);
+                ResultSet rs = pst.executeQuery()
+        ) {
             while (rs.next()) {
                 tours.add(getTourFromResultSet(rs));
             }
@@ -75,30 +122,25 @@ public class TourDAO {
         return tours;
     }
 
-    public static List<Tour> getToursByTypePriceGuestsHotelType() {
-        List<Tour> tours = new ArrayList<>();
-        return tours;
-    }
-
     public static int createTour(Tour tour) {
         int result = 0;
 
         try (Connection con = DataSource.getConnection();
-             PreparedStatement preparedStatement = con.prepareStatement(SQL_INSERT_TOUR)) {
+             PreparedStatement pst = con.prepareStatement(SQL_INSERT_TOUR)) {
 
-            preparedStatement.setString(1, tour.getName());
-            preparedStatement.setString(2, String.valueOf(tour.getTourType()));
-            preparedStatement.setObject(3, tour.getHotelId());
-            preparedStatement.setInt(4, tour.getGuestsNumber());
-            preparedStatement.setDate(5, Date.valueOf(tour.getStartDay()));
-            preparedStatement.setDate(6, Date.valueOf(tour.getEndDay()));
-            preparedStatement.setBigDecimal(7, tour.getPrice());
-            preparedStatement.setInt(8, tour.getMaxDiscount());
-            preparedStatement.setInt(9, tour.getDiscountStep());
-            preparedStatement.setBoolean(10, tour.getHot());
-            preparedStatement.setString(11, tour.getDescription());
+            pst.setString(1, tour.getName());
+            pst.setString(2, String.valueOf(tour.getTourType()));
+            pst.setObject(3, tour.getHotelId());
+            pst.setInt(4, tour.getGuestsNumber());
+            pst.setDate(5, Date.valueOf(tour.getStartDay()));
+            pst.setDate(6, Date.valueOf(tour.getEndDay()));
+            pst.setBigDecimal(7, tour.getPrice());
+            pst.setInt(8, tour.getMaxDiscount());
+            pst.setInt(9, tour.getDiscountStep());
+            pst.setBoolean(10, tour.getHot());
+            pst.setString(11, tour.getDescription());
 
-            result = preparedStatement.executeUpdate();
+            result = pst.executeUpdate();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -113,12 +155,15 @@ public class TourDAO {
             tour.setId(rs.getInt(FIELD_ID));
             tour.setName(rs.getString(FIELD_NAME));
             tour.setTourType(Tour.TourType.valueOf(rs.getString(FIELD_TOUR_TYPE).toUpperCase()));
-
-            Hotel hotel = new Hotel();
-            hotel.setId(rs.getInt(FIELD_HOTEL_ID));
-            hotel.setName(rs.getString(FIELD_HOTEL_NAME));
-            hotel.setHotelType(rs.getInt(FIELD_HOTEL_TYPE));
-            tour.setHotel(hotel);
+            Object hotelId = rs.getObject(FIELD_HOTEL_ID);
+            tour.setHotelId((Integer) hotelId);
+            if (hotelId != null) {
+                Hotel hotel = new Hotel();
+                hotel.setId((Integer) hotelId);
+                hotel.setName(rs.getString(FIELD_HOTEL_NAME));
+                hotel.setHotelType(rs.getInt(FIELD_HOTEL_TYPE));
+                tour.setHotel(hotel);
+            }
 
             tour.setGuestsNumber(rs.getInt(FIELD_GUESTS_NUMBER));
             tour.setStartDay(rs.getDate(FIELD_START_DATE).toLocalDate());
@@ -142,7 +187,6 @@ public class TourDAO {
 
             ps.setString(1, tour.getName());
             ps.setString(2, String.valueOf(tour.getTourType()));
-            ps.setInt(2, tour.getHotelId());
             ps.setObject(3, tour.getHotelId());
             ps.setInt(4, tour.getGuestsNumber());
             ps.setDate(5, Date.valueOf(tour.getStartDay()));

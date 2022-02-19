@@ -1,4 +1,4 @@
-package org.olenazaviriukha.travel.controller;
+package org.olenazaviriukha.travel.auth.controller;
 
 import org.olenazaviriukha.travel.users.dao.UserDAO;
 import org.olenazaviriukha.travel.users.entity.User;

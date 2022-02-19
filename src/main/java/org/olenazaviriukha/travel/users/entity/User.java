@@ -54,6 +54,10 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -61,6 +65,14 @@ public class User implements Serializable {
     public void setRole(Role role) {
         this.role = role;
         this.roleId = role.getId();
+    }
+
+    public boolean isManager() {
+        return role.getId() == 2;
+    }
+
+    public boolean isAdmin() {
+        return role.getId() == 3;
     }
 
     public String getPassword() {

@@ -11,7 +11,7 @@ public class Tour implements Serializable {
     private Integer id;
     private String name;
     private TourType tourType;
-    private Hotel hotel;
+    private Hotel hotel = null;
     private Integer hotelId;
     private Integer guestsNumber;
     private LocalDate startDay;
@@ -25,7 +25,11 @@ public class Tour implements Serializable {
     public enum TourType{
         RELAX,
         EXCURSION,
-        SHOPPING
+        SHOPPING;
+
+        public String getFriendlyName() {
+            return name().toLowerCase();
+        }
     }
 
     public Integer getId() {

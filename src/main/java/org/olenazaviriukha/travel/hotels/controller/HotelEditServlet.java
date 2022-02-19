@@ -1,7 +1,7 @@
 package org.olenazaviriukha.travel.hotels.controller;
 
 import org.olenazaviriukha.travel.common.exceptions.ValidationException;
-import org.olenazaviriukha.travel.dao.DuplicateKeyException;
+import org.olenazaviriukha.travel.common.exceptions.DuplicateKeyException;
 import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
 import org.olenazaviriukha.travel.hotels.entity.Hotel;
 import org.olenazaviriukha.travel.common.utils.ValidationUtils;

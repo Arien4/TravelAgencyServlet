@@ -4,10 +4,10 @@ package org.olenazaviriukha.travel.common.paginator;
  * Class used for pagination
  */
 public class Page {
-    private boolean active;
-    private int index;  // 0-based
-    private int limit;
-    private String uri;
+    private final boolean active;
+    private final int index;  // 0-based
+    private final int limit;
+    private final String uri;
 
     public Page(boolean active, int index, int limit, String uriTemplate) {
         this.active = active;

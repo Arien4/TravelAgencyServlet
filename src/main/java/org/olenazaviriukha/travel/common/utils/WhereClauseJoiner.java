@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class WhereClauseJoiner {
-    private static final String IS_NULL = "IS NULL";
 
     private List<Object> values;
     private StringJoiner whereCause;

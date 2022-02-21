@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
     private static final String USER_BLOCKED = "User is blocked";
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
         if (session.getAttribute("user") != null) {
@@ -56,21 +56,21 @@ public class LoginServlet extends HttpServlet {
                 // authentication error: no such user
                 req.setAttribute(EMAIL, email);
                 req.setAttribute(ERROR, AUTHENTICATION_ERROR);
-                getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
+                req.getRequestDispatcher("/login.jsp").forward(req, resp);
 //                resp.sendRedirect("/login.jsp");
                 return;
             }
             if (!SecurityUtils.validatePassword(password, user.getPassword())) {
                 req.setAttribute(EMAIL, email);
                 req.setAttribute(ERROR, AUTHENTICATION_ERROR);
-                getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
+                req.getRequestDispatcher("/login.jsp").forward(req, resp);
                 return;
             }
         } catch (Exception e) {
             // can't authenticate
             req.setAttribute(EMAIL, email);
             req.setAttribute(ERROR, AUTHENTICATION_ERROR);
-            getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
             return;
         }
 
@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
 
         session.setAttribute(USER, user);
 
-            if(remember == "on")
+            if(remember.equals("on"))
                 session.setMaxInactiveInterval(604800); // 7 days
             else
                 session.setMaxInactiveInterval(1800); //  30 minutes

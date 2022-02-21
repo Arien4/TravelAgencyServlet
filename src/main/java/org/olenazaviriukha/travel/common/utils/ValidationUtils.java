@@ -80,6 +80,7 @@ public class ValidationUtils {
         if (type < 0 || type > 5) return WRONG_HOTEL_TYPE;
         return null;
     }
+
     public static String guestsNumberValidationError(Integer guests) {
         if (guests == null) return REQUIRED;
         if (guests < 1 || guests > 10) return WRONG_GUESTS_NUMBER;
@@ -106,7 +107,7 @@ public class ValidationUtils {
     public static String discountStepValidationError(Integer discountStep, Integer maxDiscount) {
         Integer max = maxDiscount;
         if (maxDiscount == null) {
-            max = Integer.valueOf(99);
+            max = 99;
         }
         if (discountStep > max || discountStep < 1) return WRONG_DISCOUNT_STEP;
         return null;

@@ -1,18 +1,19 @@
 package org.olenazaviriukha.travel.tours.controller;
 
-import org.olenazaviriukha.travel.common.exceptions.ValidationException;
 import org.olenazaviriukha.travel.common.exceptions.DuplicateKeyException;
+import org.olenazaviriukha.travel.common.exceptions.ValidationException;
+import org.olenazaviriukha.travel.common.utils.ValidationUtils;
 import org.olenazaviriukha.travel.hotels.dao.HotelDAO;
 import org.olenazaviriukha.travel.tours.dao.TourDAO;
 import org.olenazaviriukha.travel.tours.entity.Tour;
-import org.olenazaviriukha.travel.common.utils.ValidationUtils;
-
+import org.olenazaviriukha.travel.users.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet({"/tour_add", "/tour_edit"})
+@WebServlet({"/tour_add", "/tour_edit", "/tour_edit_limited"})
 public class TourEditServlet extends HttpServlet {
     private static final String TOUR_ID = "tour_id";
     private static final String NAME = "name";
@@ -49,7 +50,7 @@ public class TourEditServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // зробити переадресацію, якщо незалогінений користувач або кастомер?
+
         this.setRequestDefaultValues(req);
         Integer tourId = null;
         try {
@@ -60,8 +61,12 @@ public class TourEditServlet extends HttpServlet {
             Tour tour = TourDAO.getTourById(tourId);
             req.setAttribute("tour", tour);
         }
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user.isAdmin()) req.getRequestDispatcher("/JSP/tours/tour_edit.jsp").forward(req, resp);
+        else if (user.isManager()) req.getRequestDispatcher("/JSP/tours/tour_edit_limited.jsp").forward(req, resp);
+        else resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 
-        req.getRequestDispatcher("/JSP/tours/tour_edit.jsp").forward(req, resp);
     }
 
     @Override

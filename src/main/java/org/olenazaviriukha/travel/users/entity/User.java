@@ -68,11 +68,11 @@ public class User implements Serializable {
     }
 
     public boolean isManager() {
-        return role.getId() == 2;
+        return getRoleId() == 2;
     }
 
     public boolean isAdmin() {
-        return role.getId() == 3;
+        return getRoleId() == 3;
     }
 
     public String getPassword() {

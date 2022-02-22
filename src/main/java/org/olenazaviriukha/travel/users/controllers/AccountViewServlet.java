@@ -24,6 +24,6 @@ public class AccountViewServlet extends HttpServlet {
         req.setAttribute("user", user);
         List<OrderedTour> orderedTours = OrderedTourDAO.getUserOrderedTours(user);
         req.setAttribute("orderedTours", orderedTours);
-        getServletContext().getRequestDispatcher("/JSP/users/account.jsp").forward(req, resp);
+        req.getRequestDispatcher("/JSP/users/account.jsp").forward(req, resp);
     }
 }

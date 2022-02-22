@@ -1,11 +1,12 @@
 package org.olenazaviriukha.travel.common.utils;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
+import java.util.Arrays;
 
 /**
  * Utils for password hashing and password checking
@@ -51,14 +52,22 @@ public class SecurityUtils {
 
     }
 
+    /**
+     * Generates salt
+     * @return String to be used as salt
+     */
     private static String getSalt() throws NoSuchAlgorithmException {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
-        return salt.toString();
+        return Arrays.toString(salt);
     }
 
-    private static String toHex(byte[] array) throws NoSuchAlgorithmException {
+    /**
+     * Converts byte array to Hex
+     * @return String representation of Hex
+     */
+    private static String toHex(byte[] array) {
         BigInteger bi = new BigInteger(1, array);
         String hex = bi.toString(16);
         int paddingLength = (array.length * 2) - hex.length();
@@ -69,7 +78,13 @@ public class SecurityUtils {
         }
     }
 
-    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException {
+    /**
+     * Converts Hex to byte array
+     * @param hex String value
+     * @return byte array from hex
+
+     */
+    private static byte[] fromHex(String hex) {
         byte[] bytes = new byte[hex.length() / 2];
         for (int i = 0; i < bytes.length; i++) {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2),

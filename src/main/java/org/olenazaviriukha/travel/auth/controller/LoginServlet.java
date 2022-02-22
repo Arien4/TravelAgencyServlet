@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
     private static final String USER_BLOCKED = "User is blocked";
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
         if (session.getAttribute("user") != null) {
@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
         HttpSession session = req.getSession();
         if (session.getAttribute("user") != null) {
@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
 
         String email = req.getParameter(EMAIL);
         String password = req.getParameter(PASSWORD);
-        String remember = req.getParameter(REMEMBER); // "on" or ""
+        String remember = req.getParameter(REMEMBER); // "on" or null
 
         User user = UserDAO.getUserByEmail(email);
         try {
@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
 
         session.setAttribute(USER, user);
 
-            if(remember.equals("on"))
+            if(remember == "on")
                 session.setMaxInactiveInterval(604800); // 7 days
             else
                 session.setMaxInactiveInterval(1800); //  30 minutes

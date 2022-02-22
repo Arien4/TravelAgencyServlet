@@ -5,8 +5,6 @@ import org.olenazaviriukha.travel.users.entity.User;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 public class OrderedTour implements Serializable {
     private Integer id;
@@ -96,6 +94,10 @@ public class OrderedTour implements Serializable {
         percent = percent / 100;
         BigDecimal finalPrice = fixedPrice.multiply(BigDecimal.valueOf(percent));
         return finalPrice;
+    }
+
+    public boolean isNew() {
+        return status == Status.REGISTERED;
     }
 
     public enum Status {

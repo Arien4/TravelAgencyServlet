@@ -45,15 +45,24 @@
 
         <div class="mb-3">
             <label for="statusSelect" class="form-label">Status</label>
-
-            <select class="form-select form-select-lg" name="status" id="statusSelect">
-                <option></option>
-                <c:forEach var="item" items="${orderedTourStatusList}">
-                    <option value="${item}" ${orderedTour.status == item ? 'selected="true"' : ''}>
-                        <fmt:message key="orderedTour.form.status.${item}"/>
-                    </option>
-                </c:forEach>
-            </select>
+            <c:if test="${orderedTour.status eq 'COMPLETED' || orderedTour.status eq 'CANCELLED' }">
+                <c:set var="orderStatus">
+                    <fmt:message key="orderedTour.form.status.${orderedTour.status}"/>
+                </c:set>
+                <input disabled="disabled" class="form-control" value="${orderStatus}" id="statusSelect"/>
+                <input type="hidden" value="${orderedTour.status}" name="status"/>
+            </c:if>
+            <c:if test="${orderedTour.status ne 'COMPLETED' && orderedTour.status ne 'CANCELLED' }">
+                <select class="form-select form-select-lg" name="status" id="statusSelect">
+                    <c:forEach var="item" items="${orderedTourStatusList}">
+                        <c:if test="${ orderedTour.isNew() || item ne 'REGISTERED' }">
+                            <option value="${item}" ${orderedTour.status == item ? 'selected="true"' : ''}>
+                                <fmt:message key="orderedTour.form.status.${item}"/>
+                            </option>
+                        </c:if>
+                    </c:forEach>
+                </select>
+            </c:if>
         </div>
         <div class="mb-3">
             <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2"
@@ -67,7 +76,11 @@
             <label for="discountInput" class="form-label">Discount:
                 <span id="discountLabel">${orderedTour.discount}</span></label>
             <div class="input-group">
-                <input type="range" class="form-range" id="discountInput" name="discount"
+                <c:if test="${!orderedTour.isNew()}">
+                    <input type="hidden" name="discount" value="${orderedTour.discount}"/>
+                </c:if>
+                <input type="range" class="form-range" id="discountInput" name="discount${!orderedTour.isNew() ? '_disabled' : ''}"
+                       ${!orderedTour.isNew() ? 'disabled="disabled"' : ''}
                        value="${orderedTour.discount}" min="0" max="${orderedTour.tour.maxDiscount}"
                        step="${orderedTour.tour.discountStep}" onchange="updateLabel(this.value);"/>
             </div>

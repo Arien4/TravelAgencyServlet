@@ -1,19 +1,19 @@
 <%@ page isELIgnored="false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="pg" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="messages"/>
 <html>
-<jsp:include page="../../head_section.jsp" />
+<jsp:include page="../../head_section.jsp"/>
 <body>
-<jsp:include page="../../header.jsp" />
+<jsp:include page="../../header.jsp"/>
 <div class="container">
-<table class="table table-striped table-hover">
-    <caption>Tour list</caption>
-    <thead>
+    <table class="table table-striped table-hover">
+        <caption>Tour list</caption>
+        <thead>
         <tr>
             <th scope="col" class="col">Name</th>
             <th scope="col" class="col">Type</th>
@@ -28,8 +28,8 @@
             <th scope="col" class="col-2">Description</th>
             <th scope="col">Edit</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <c:forEach var="tour" items="${tours}">
             <tr>
                 <td><a href="<%= request.getContextPath() %>/tour?tour_id=${tour.id}">${tour.name}</a></td>
@@ -43,12 +43,14 @@
                 <td>${tour.discountStep}</td>
                 <td><i class="bi bi-${ tour.hot ? 'check-' : '' }square"></i></td>
                 <td>${fn:substring(tour.description, 0, 100)}</td>
-                <td><i class="bi bi-pencil-square"></i><a href="<%= request.getContextPath() %>/tour_edit?tour_id=${tour.id}">Edit</a></td>
+                <td><i class="bi bi-pencil-square"></i><a href="<%= request.getContextPath() %>/tour_edit?tour_id=${tour.id}">Edit</a>
+
+                </td>
             </tr>
 
         </c:forEach>
-    </tbody>
-</table>
+        </tbody>
+    </table>
 </div>
 <pg:paginator paginator="${paginator}"/>
 </body>

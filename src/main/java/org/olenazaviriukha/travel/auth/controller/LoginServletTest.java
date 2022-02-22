@@ -1,10 +1,10 @@
-package servlets;
+package org.olenazaviriukha.travel.auth.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.olenazaviriukha.travel.auth.controller.LoginServlet;
 import org.olenazaviriukha.travel.common.utils.SecurityUtils;
 import org.olenazaviriukha.travel.users.dao.UserDAO;
 import org.olenazaviriukha.travel.users.entity.User;
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 
 import static org.mockito.Mockito.*;
@@ -44,7 +45,7 @@ public class LoginServletTest {
         session = Mockito.mock(HttpSession.class);
         when(req.getSession()).thenReturn(session);
         when(req.getContextPath()).thenReturn("");
-        when(req.getRequestDispatcher(anyString())).thenReturn(Mockito.mock(RequestDispatcher.class));
+        when(req.getRequestDispatcher(ArgumentMatchers.anyString())).thenReturn(Mockito.mock(RequestDispatcher.class));
         when(req.getParameter(PARAM_EMAIL)).thenReturn(VALUE_EMAIL);
         when(req.getParameter(PARAM_PASSWORD)).thenReturn(VALUE_PASSWORD);
         when(req.getParameter(PARAM_REMEMBER)).thenReturn("on");
@@ -67,15 +68,18 @@ public class LoginServletTest {
     }
 
     @Test
-    public void shouldForwardToLoginJSP() throws ServletException, IOException {
+    public void shouldForwardToLoginJSP() throws ServletException, IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         when(session.getAttribute(PARAM_USER)).thenReturn(null);
+//        Method loginDoGet = LoginServlet.class.getDeclaredMethod("doGet");
+//        loginDoGet.setAccessible(true);
+//        loginDoGet.invoke(req, resp);
         new LoginServlet().doGet(req, resp);
         verify(req, times(1)).getRequestDispatcher("/login.jsp");
     }
 
     @Test
     public void shouldReturnErrorMessageIfUserNotExists() throws ServletException, IOException {
-        try (MockedStatic<UserDAO> userDAO = mockStatic(UserDAO.class)) {
+        try (MockedStatic<UserDAO> userDAO = Mockito.mockStatic(UserDAO.class)) {
             userDAO.when(() -> UserDAO.getUserByEmail(VALUE_EMAIL)).thenReturn(null);
             new LoginServlet().doPost(req, resp);
             verify(req).setAttribute(PARAM_ERROR, MESSAGE_AUTH_ERROR);
@@ -86,11 +90,11 @@ public class LoginServletTest {
     @Test
     public void shouldReturnErrorMessageIfPasswordValidationThrowException() throws ServletException, IOException {
         try (
-                MockedStatic<UserDAO> userDAOMockedStatic = mockStatic(UserDAO.class);
-                MockedStatic<SecurityUtils> securityUtilsMockedStatic = mockStatic(SecurityUtils.class)
+                MockedStatic<UserDAO> userDAOMockedStatic = Mockito.mockStatic(UserDAO.class);
+                MockedStatic<SecurityUtils> securityUtilsMockedStatic = Mockito.mockStatic(SecurityUtils.class)
         ) {
             userDAOMockedStatic.when(() -> UserDAO.getUserByEmail(VALUE_EMAIL)).thenReturn(new User());
-            securityUtilsMockedStatic.when(() -> SecurityUtils.validatePassword(any(), any())).thenThrow(new NoSuchAlgorithmException());
+            securityUtilsMockedStatic.when(() -> SecurityUtils.validatePassword(ArgumentMatchers.any(), ArgumentMatchers.any())).thenThrow(new NoSuchAlgorithmException());
             new LoginServlet().doPost(req, resp);
             verify(req).setAttribute(PARAM_ERROR, MESSAGE_AUTH_ERROR);
 
@@ -100,11 +104,11 @@ public class LoginServletTest {
     @Test
     public void shouldReturnErrorMessageIfPasswordValidationFails() throws ServletException, IOException {
         try (
-                MockedStatic<UserDAO> ususerDAOMockedStaticrDAO = mockStatic(UserDAO.class);
-                MockedStatic<SecurityUtils> securityUtilsMockedStatic = mockStatic(SecurityUtils.class)
+                MockedStatic<UserDAO> userDAOMockedStaticDAO = Mockito.mockStatic(UserDAO.class);
+                MockedStatic<SecurityUtils> securityUtilsMockedStatic = Mockito.mockStatic(SecurityUtils.class)
         ) {
-            ususerDAOMockedStaticrDAO.when(() -> UserDAO.getUserByEmail(VALUE_EMAIL)).thenReturn(new User());
-            securityUtilsMockedStatic.when(() -> SecurityUtils.validatePassword(anyString(), anyString())).thenReturn(false);
+            userDAOMockedStaticDAO.when(() -> UserDAO.getUserByEmail(VALUE_EMAIL)).thenReturn(new User());
+            securityUtilsMockedStatic.when(() -> SecurityUtils.validatePassword(ArgumentMatchers.anyString(), ArgumentMatchers.anyString())).thenReturn(false);
             new LoginServlet().doPost(req, resp);
             verify(req).setAttribute(PARAM_ERROR, MESSAGE_AUTH_ERROR);
 
@@ -114,14 +118,14 @@ public class LoginServletTest {
     @Test
     public void shouldReturnErrorMessageIfUserIsBlocked() throws ServletException, IOException {
         try (
-                MockedStatic<UserDAO> ususerDAOMockedStaticrDAO = mockStatic(UserDAO.class);
-                MockedStatic<SecurityUtils> securityUtilsMockedStatic = mockStatic(SecurityUtils.class)
+                MockedStatic<UserDAO> ususerDAOMockedStaticrDAO = Mockito.mockStatic(UserDAO.class);
+                MockedStatic<SecurityUtils> securityUtilsMockedStatic = Mockito.mockStatic(SecurityUtils.class)
         ) {
             User blockedUser = new User();
             blockedUser.setBlocked(true);
             blockedUser.setPassword("test");
             ususerDAOMockedStaticrDAO.when(() -> UserDAO.getUserByEmail(VALUE_EMAIL)).thenReturn(blockedUser);
-            securityUtilsMockedStatic.when(() -> SecurityUtils.validatePassword(anyString(), anyString())).thenReturn(true);
+            securityUtilsMockedStatic.when(() -> SecurityUtils.validatePassword(ArgumentMatchers.anyString(), ArgumentMatchers.anyString())).thenReturn(true);
             new LoginServlet().doPost(req, resp);
             verify(req).setAttribute(PARAM_ERROR, MESSAGE_BLOCKED);
         }
@@ -130,14 +134,14 @@ public class LoginServletTest {
     @Test
     public void shouldSetUserInSessionOnSuccess() throws ServletException, IOException {
         try (
-                MockedStatic<UserDAO> ususerDAOMockedStaticrDAO = mockStatic(UserDAO.class);
-                MockedStatic<SecurityUtils> securityUtilsMockedStatic = mockStatic(SecurityUtils.class)
+                MockedStatic<UserDAO> ususerDAOMockedStaticrDAO = Mockito.mockStatic(UserDAO.class);
+                MockedStatic<SecurityUtils> securityUtilsMockedStatic = Mockito.mockStatic(SecurityUtils.class)
         ) {
             User validUser = new User();
             validUser.setBlocked(false);
             validUser.setPassword("test");
             ususerDAOMockedStaticrDAO.when(() -> UserDAO.getUserByEmail(VALUE_EMAIL)).thenReturn(validUser);
-            securityUtilsMockedStatic.when(() -> SecurityUtils.validatePassword(anyString(), anyString())).thenReturn(true);
+            securityUtilsMockedStatic.when(() -> SecurityUtils.validatePassword(ArgumentMatchers.anyString(), ArgumentMatchers.anyString())).thenReturn(true);
             new LoginServlet().doPost(req, resp);
             verify(session).setAttribute(PARAM_USER, validUser);
         }

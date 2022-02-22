@@ -20,7 +20,7 @@ public class UserDAO {
     public static final String SQL_GET_USER_BY_ID = SQL_GET_ALL_USERS + " WHERE user.id=?";
     private static final String SQL_INSERT_USER =
             "INSERT INTO user (email, first_name, last_name, password) VALUES (?, ?, ?, ?)";
-    private static final String SQL_UPDATE_USER =
+    public static final String SQL_UPDATE_USER =
             "UPDATE user" +
                     " SET email=?, first_name=?, last_name=?, role_id=?, blocked=?" +
                     " WHERE id=?";
